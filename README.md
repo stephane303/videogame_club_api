@@ -11,12 +11,14 @@
 
       composer install
 * MySql dump is in the file club.sql and has to be imported in MySql
-
+## Authentication
+HttpBasicAuthentication is possible to use but has been commented for this exercise.
 ## Api endpoints and payload
 
 ### GET $WEBROOT/api/v1/members
 Get the full list of the club members in json format.
 
+Output:
 ```json
 [
     {
@@ -46,6 +48,15 @@ Payload for application/json format:
 	"birthdate" : "1978-03-15"
 }
 ```
+Output:
+```json
+{
+    "last_name": "Müller",
+    "first_name": "Aline",
+    "birthdate": "978-03-15",
+    "member_id": "14"
+}
+```
 
 ### PUT $WEBROOT/api/v1/member/{member_id}
 Update a member data
@@ -60,15 +71,42 @@ Payload for application/json format:
 	"birthdate" : "1978-03-15"
 }
 ```
-
+Output:
+```json
+{
+    "last_name": "Miller",
+    "first_name": "Aline",
+    "birthdate": "1978-03-15",
+    "member_id": "10"
+}
+```
 ### GET $WEBROOT/api/v1/member/{member_id}
 Retrieve member data in json format.
+Output:
+```json
+{
+    "member_id": "10",
+    "first_name": "Valérie",
+    "last_name": "Noirat",
+    "birthdate": "1968-03-03"
+}
+```
 
 ### DELETE $WEBROOT/api/v1/member/{member_id}
 Delete member
 
+Output:
+```json
+{
+    "Ok": {
+        "text": "Successfully deleted record"
+    }
+}
+```
 ### GET $WEBROOT/api/v1/games
 Get the full list of the club members in json format.
+
+Output:
 ```json
 [
     {
@@ -101,11 +139,13 @@ Payload for application/json format:
 	"release_year" : "1980"
 }
 ```
-
+Output:
 
 
 ### GET $WEBROOT/api/v1/member/{member_id}/games
 Retrieve the list of games in json format owned by a member
+
+Output:
 ```json
 [
     {
@@ -129,8 +169,39 @@ Retrieve the list of games in json format owned by a member
 ### POST $WEBROOT/api/v1/member/{member_id}/game/{game_id}
 Add a game to the collection of a member
 
+Output:
+```json{
+{
+    "Ok": {
+        "text": "member_id:11 game_id:4 added"
+    }
+}
+```
 ### DELETE $WEBROOT/api/v1/member/{member_id}/game/{game_id}
 Delete a game from the collection of a member
+
+Output:
+```json
+{
+    "Ok": {
+        "text": "member_id:11 game_id:4 deleted"
+    }
+}
+```
+
+## Error Management
+
+If an error occurs the following json message will the sent:
+```json
+{
+    "Error": {
+        "text": "<Error message>"
+    }
+}
+```
+
+HTTP 200 OK success status will be sent, should be improved by sending a more appropriate  status
+
 
 
 

@@ -21,7 +21,6 @@ class MemberMapper  extends Mapper {
         try {
             $stmt = $this->db->query($sql);
             $members = $stmt->fetchAll(\PDO::FETCH_OBJ);
-            //var_dump($members);
             return json_encode($members , JSON_UNESCAPED_UNICODE);
         } catch (\PDOException $e) {
             return $this->Json_Error( $e->getMessage());
@@ -48,12 +47,12 @@ class MemberMapper  extends Mapper {
 
     public function addMember($request)
     {
-        $member = $request->getParsedBody();
+        $member = $request->getParsedBody();   // getParsedBody allow to use application/json AND x-www-form-urlencoded
 
 
         $sql = "INSERT INTO member (first_name, last_name, birthdate) VALUES (:first_name, :last_name, :birthdate)";
         try {
-            $db = getConnection();
+
             $stmt = $this->db->prepare($sql);
             $stmt->bindParam("first_name", $member["first_name"]);
             $stmt->bindParam("last_name", $member["last_name"]);
@@ -70,7 +69,7 @@ class MemberMapper  extends Mapper {
     public function updateMember($request)
     {
 
-        $member = $request->getParsedBody();
+        $member = $request->getParsedBody();  // getParsedBody allow to use application/json AND x-www-form-urlencoded
         $id = $request->getAttribute('id');
         $sql = "UPDATE member SET first_name=:first_name, last_name=:last_name, birthdate=:birthdate WHERE member_id=:member_id";
         try {

@@ -9,10 +9,10 @@ namespace Mapper;
  */
 class Mapper {
     protected function Json_Error ($msg){
-        return '{"Error":{"text":' . $msg . '}}';
+        return '{"Error":{"text":"' . $msg . '"}}';
     }
 
     protected function Json_Ok ($msg){
-        return '{"Ok":{"text":' . $msg . '}}';
+        return '{"Ok":{"text":"' . $msg . '"}}';
     }
 }
