@@ -3,6 +3,8 @@
 use Slim\App;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use \Mapper\MemberMapper;
+use \Mapper\GameMapper;
 
 return function (App $app) {
     $container = $app->getContainer();
@@ -12,18 +14,52 @@ return function (App $app) {
         $app->group('/v1', function () use ($app, $container) {
 
             // Members
-            $app->get('/members', 'getMembers');
-            $app->get('/member/{id}', 'getMember');
-            $app->post('/member', 'addMember');
-            $app->put('/member/{id}', 'updateMember');
-            $app->delete('/member/{id}', 'deleteMember');
+            $app->get('/members', function (Request $request, Response $response, array $args) use ($container) {
+                $memberMapper = new MemberMapper($container->db);
+                return $memberMapper->getMembers();
+            });
+            $app->get('/member/{id}', function (Request $request, Response $response, array $args) use ($container) {
+                $memberMapper = new MemberMapper($container->db);
+                return $memberMapper->getMember($request);
+            });
+            $app->post('/member', function (Request $request, Response $response, array $args) use ($container) {
+                $memberMapper = new MemberMapper($container->db);
+                return $memberMapper->addMember($request);
+            });
+            $app->put('/member/{id}', function (Request $request, Response $response, array $args) use ($container) {
+                $memberMapper = new MemberMapper($container->db);
+                return $memberMapper->updateMember($request);
+            });
+            $app->delete('/member/{id}', function (Request $request, Response $response, array $args) use ($container) {
+                $memberMapper = new MemberMapper($container->db);
+                return $memberMapper->deleteMember($request);
+            });
+            $app->get( '/member/{id}/games', function (Request $request, Response $response, array $args) use ($container) {
+                $memberMapper = new MemberMapper($container->db);
+                return $memberMapper->getMemberGames($request);
+            });
+            $app->post( '/member/{member_id}/game/{game_id}',function (Request $request, Response $response, array $args) use ($container) {
+                $memberMapper = new MemberMapper($container->db);
+                return $memberMapper->addMemberGame($request);
+            });
+            $app->delete( '/member/{member_id}/game/{game_id}', function (Request $request, Response $response, array $args) use ($container) {
+                $memberMapper = new MemberMapper($container->db);
+                return $memberMapper->deleteMemberGame($request);
+            });
+
+
 
             //Game
-            $app->get('/games', 'getGames');
-            $app->get( '/member/{id}/games', 'getMemberGames');
-            $app->post( '/member/{member_id}/game/{game_id}','addMemberGame');
-            $app->post('/game','addGame');
-            $app->delete( '/member/{member_id}/game/{game_id}', 'deleteMemberGame');
+            $app->get('/games', function (Request $request, Response $response, array $args) use ($container) {
+                $gameMapper = new GameMapper($container->db);
+                return $gameMapper->getGames();
+            });
+
+            $app->post('/game',function (Request $request, Response $response, array $args) use ($container) {
+                $gameMapper = new GameMapper($container->db);
+                return $gameMapper->addGame($request);
+            });
+
 
         });
     });
