@@ -191,7 +191,7 @@ Output:
 
 ## Error Management
 
-If an error occurs the following json message will the sent:
+If an error occurs the following json message will be sent:
 ```json
 {
     "Error": {
